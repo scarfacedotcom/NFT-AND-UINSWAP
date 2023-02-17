@@ -83,7 +83,20 @@ async function main() {
 
 
   // Second Transaction
-  //Uniswap.connect(impersonatedSigner).addLiquidityETH()
+
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~SECOND TRANSACTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~APPROVE LIQUIDITY TOKENS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
+  await UniContract.connect(impersonatedSigner).approve(ROUTER, txB.amountTokenDesired)
+  Uniswap.connect(impersonatedSigner).addLiquidityETH(
+    txB.token,
+    txB.amountTokenDesired,
+    txB.amountTokenMin,
+    txB.amountETHMin,
+    txB.to,
+    txB.deadline
+  );
 
 
   // Third Transaction
