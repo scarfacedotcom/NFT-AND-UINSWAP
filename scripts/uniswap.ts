@@ -44,8 +44,9 @@ async function main() {
     amountTokenDesired: ethers.utils.parseEther("90"),
     amountTokenMin: 0,
     amountETHMin: 0,
-    to: impersonatedSigner,
-    deadline: 1696588399
+    to: impersonatedSigner.address,
+    deadline: 1696588399,
+    value: ethers.utils.parseEther("1")
   }
 
   // Third transaction
@@ -55,7 +56,7 @@ async function main() {
       liquidity: ethers.utils.parseEther("0"),
       amountAMin: 1,
       amountBMin: 1,
-      to: impersonatedSigner,
+      to: impersonatedSigner.address,
       deadline: 696588399
   }
     
@@ -68,6 +69,7 @@ async function main() {
 
   await DaiContract.connect(impersonatedSigner).approve(ROUTER, txA.amountADesired)
   await UniContract.connect(impersonatedSigner).approve(ROUTER, txA.amountBDesired)
+  
 
   console.log(`Adding DAI and UNI Liquidity...............`)
   Uniswap.connect(impersonatedSigner).addLiquidity(
@@ -89,13 +91,18 @@ async function main() {
   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~APPROVE LIQUIDITY TOKENS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
 
   await DaiContract.connect(impersonatedSigner).approve(ROUTER, txB.amountTokenDesired)
+
+  console.log(`Adding DAI and ETH Liquidity...............`)
+
+
   Uniswap.connect(impersonatedSigner).addLiquidityETH(
     txB.token,
     txB.amountTokenDesired,
     txB.amountTokenMin,
     txB.amountETHMin,
     txB.to,
-    txB.deadline
+    txB.deadline,
+    {value: txB.value}
   );
 
 
