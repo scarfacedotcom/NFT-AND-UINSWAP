@@ -40,10 +40,10 @@ async function main() {
 
   // Second transaction
   const txB = {
-    token: UNI,
+    token: DAI,
     amountTokenDesired: ethers.utils.parseEther("90"),
-    amountTokenMin: 1,
-    amountETHMin: 1,
+    amountTokenMin: 0,
+    amountETHMin: 0,
     to: impersonatedSigner,
     deadline: 1696588399
   }
@@ -88,7 +88,7 @@ async function main() {
 
   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~APPROVE LIQUIDITY TOKENS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
 
-  await UniContract.connect(impersonatedSigner).approve(ROUTER, txB.amountTokenDesired)
+  await DaiContract.connect(impersonatedSigner).approve(ROUTER, txB.amountTokenDesired)
   Uniswap.connect(impersonatedSigner).addLiquidityETH(
     txB.token,
     txB.amountTokenDesired,
