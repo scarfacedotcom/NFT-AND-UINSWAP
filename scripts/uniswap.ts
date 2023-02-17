@@ -11,10 +11,12 @@ async function main() {
 
 
   // Getting contract implementation
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~CONTRACT IMPLEMENTATION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
   const Uniswap = await ethers.getContractAt("IUniswap", ROUTER);
-  const UsdcContract = await ethers.getContractAt("IERC20", DAI);
-  const WETHContract = await ethers.getContractAt("IERC20", WETH);
-  const MaticContract = await ethers.getContractAt("IERC20", UNI);
+  const DaiContract = await ethers.getContractAt("IToken", DAI);
+  const WETHContract = await ethers.getContractAt("IToken", WETH);
+  const UniContract = await ethers.getContractAt("IToken", UNI);
   
 
   // Setting up impersonator
@@ -25,52 +27,58 @@ async function main() {
   // Setting up transaction variables
 
   // First transaction
-  const tx1 = {
+  const txA = {
       tokenA: DAI,
       tokenB:UNI,
       amountADesired: ethers.utils.parseEther("40"),
       amountBDesired: ethers.utils.parseEther("60"),
-      amountAMin: ethers.utils.parseEther("10"),
-      amountBMin: ethers.utils.parseEther("20"),
+      amountAMin: ethers.utils.parseEther("1"),
+      amountBMin: ethers.utils.parseEther("1"),
       to: impersonatedSigner.address,
       deadline: 1696588399
   }
 
   // Second transaction
-  const tx2 = {
-    token: "",
-    amountTokenDesired: "",
-    amountTokenMin: "",
-    amountETHMin: "",
-    to: "",
-    deadline: ""
+  const txB = {
+    token: UNI,
+    amountTokenDesired: ethers.utils.parseEther("90"),
+    amountTokenMin: 1,
+    amountETHMin: 1,
+    to: impersonatedSigner,
+    deadline: 1696588399
   }
 
   // Third transaction
-  const tx3 = {
-      tokenA: "",
-      tokenB: "",
-      liquidity: "",
-      amountAMin: "",
-      amountBMin: "",
-      to: "",
-      deadline: ""
+  const txC = {
+      tokenA: DAI,
+      tokenB: UNI,
+      liquidity: ethers.utils.parseEther("0"),
+      amountAMin: 1,
+      amountBMin: 1,
+      to: impersonatedSigner,
+      deadline: 696588399
   }
     
 
 
   // Transactions
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FIRST TRANSACTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
 
-  // First Transaction
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~APPROVE LIQUIDITY TOKENS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
+  await DaiContract.connect(impersonatedSigner).approve(ROUTER, txA.amountADesired)
+  await UniContract.connect(impersonatedSigner).approve(ROUTER, txA.amountBDesired)
+
+  console.log(`Adding DAI and UNI Liquidity...............`)
   Uniswap.connect(impersonatedSigner).addLiquidity(
-    tx1.tokenA,
-    tx1.tokenB,
-    tx1.amountADesired,
-    tx1.amountBDesired,
-    tx1.amountAMin,
-    tx1.amountBMin,
-    tx1.to,
-    tx1.deadline
+    txA.tokenA,
+    txA.tokenB,
+    txA.amountADesired,
+    txA.amountBDesired,
+    txA.amountAMin,
+    txA.amountBMin,
+    txA.to,
+    txA.deadline
   );
 
 
