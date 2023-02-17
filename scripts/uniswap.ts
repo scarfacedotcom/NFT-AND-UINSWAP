@@ -107,7 +107,19 @@ async function main() {
 
 
   // Third Transaction
-  //Uniswap.connect(impersonatedSigner).removeLiquidity()
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~THIRD TRANSACTION~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+
+  console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~REMOVE LIQUIDITY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
+  
+  Uniswap.connect(impersonatedSigner).removeLiquidity(
+    txC.tokenA,
+    txC.tokenB,
+    txC.liquidity,
+    txC.amountAMin,
+    txC.amountBMin,
+    txC.to,
+    txC.deadline
+  );
   
 }
 
