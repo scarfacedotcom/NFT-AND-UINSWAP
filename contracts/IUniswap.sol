@@ -3,6 +3,8 @@ pragma solidity ^0.8.9;
 
 interface IUniswap {
 
+    function getPair(address a, address b) external view returns(address pair);
+
     function addLiquidity(
         address tokenA,
         address tokenB,
