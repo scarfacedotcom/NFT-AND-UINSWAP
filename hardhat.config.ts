@@ -33,11 +33,12 @@ const config: HardhatUserConfig = {
     hardhat: {
       forking: {
         enabled: true,
-        url: "https://eth-mainnet.alchemyapi.io/v2/IbkEKxpq0g2wcpd3XUqioRT4_-nsa0dv",
+        //@ts-ignore
+        url: process.env.MAINNET_RPC,
       }
     },
     goerli: {
-      url: process.env.MAINNET_RPC,
+      url: process.env.GOERLI_RPC,
       //@ts-ignore
       accounts: [process.env.PRIVATE_KEY1]
     }

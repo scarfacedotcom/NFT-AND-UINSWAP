@@ -37,7 +37,7 @@ async function main() {
       amountAMin: ethers.utils.parseEther("1"),
       amountBMin: ethers.utils.parseEther("1"),
       to: impersonatedSigner.address,
-      deadline: 1796588399
+      deadline: 2796588399
   }
 
   // Second transaction
@@ -47,7 +47,7 @@ async function main() {
     amountTokenMin: 0,
     amountETHMin: 0,
     to: impersonatedSigner.address,
-    deadline: 1796588399,
+    deadline: 2796588399,
     value: ethers.utils.parseEther("1")
   }
 
@@ -59,7 +59,7 @@ async function main() {
       amountAMin: 1,
       amountBMin: 1,
       to: impersonatedSigner.address,
-      deadline: 1796588399
+      deadline: 2796588399
   }
     
 
@@ -119,17 +119,22 @@ async function main() {
 
   console.log(`~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~REMOVE LIQUIDITY~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`)
 
-  const FACTORY = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
+  //const FACTORY = "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f";
 
-  const factoryConnect = await ethers.getContractAt("IUniswap", FACTORY);
+  const FACTORY = "0xf00e80f0DE9aEa0B33aA229a4014572777E422EE";
 
-  const getPair = await factoryConnect.getPair(DAI, UNI);
+  const factoryConnect = await ethers.getContractAt("IToken", FACTORY);
 
-  console.log(` get Pair ${getPair}`);
+  //const getPair = await factoryConnect.getPair(DAI, UNI);
 
-  const liquidityToken = await ethers.getContractAt("IToken", getPair);
+
+  //console.log(` get Pair ${getPair}`);
+
+  //const liquidityToken = await ethers.getContractAt("IToken", FACTORY);
   
-  await liquidityToken.connect(impersonatedSigner).approve(ROUTER, txC.amountAToProvide);
+  await factoryConnect.connect(impersonatedSigner).approve(ROUTER, txC.liquidity);
+
+  console.log(factoryConnect.balanceOf(impersonatedSigner.address));
   
   Uniswap.connect(impersonatedSigner).removeLiquidity(
     txC.tokenA,
@@ -142,7 +147,9 @@ async function main() {
   );
 
 
-  console.log(removeLiquidity);
+  console.log(`${DaiContract.balanceOf(impersonatedSigner.address)}`);
+  console.log(`${UniContract.balanceOf(impersonatedSigner.address)}`);
+
 
 
     console.log("________________________THE END_____________________________")
